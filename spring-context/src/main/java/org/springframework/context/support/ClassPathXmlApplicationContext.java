@@ -139,6 +139,8 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 			throws BeansException {
 
 		super(parent);
+		// 1.创建Enviroment（AbstratApplicationContext的类变量）对象（同时加载系统的环境变量至propertySource中）
+		// 2.将配置文件名称中的占位符（递归替换），所以允许注入此类的(${dwdw${}})复杂写法
 		setConfigLocations(configLocations);
 		if (refresh) {
 			refresh();
@@ -191,7 +193,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 */
 	public ClassPathXmlApplicationContext(String[] paths, Class<?> clazz, @Nullable ApplicationContext parent)
 			throws BeansException {
-
+		// 创建AbstractApplicationContext等,初始化类变量
 		super(parent);
 		Assert.notNull(paths, "Path array must not be null");
 		Assert.notNull(clazz, "Class argument must not be null");

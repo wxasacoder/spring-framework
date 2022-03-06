@@ -181,6 +181,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private String id = ObjectUtils.identityToString(this);
 
 	/** Display name. */
+	/**
+	 * 给容当前容器id
+	 */
 	private String displayName = ObjectUtils.identityToString(this);
 
 	/** Parent context. */
@@ -192,12 +195,18 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private ConfigurableEnvironment environment;
 
 	/** BeanFactoryPostProcessors to apply on refresh. */
+	/**
+	 * 后置处理器的容器
+	 */
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
 	/** System time in milliseconds when this context started. */
 	private long startupDate;
 
 	/** Flag that indicates whether this context is currently active. */
+	/**
+	 * 当前容器是否在活跃
+	 */
 	private final AtomicBoolean active = new AtomicBoolean();
 
 	/** Flag that indicates whether this context has been closed already. */
@@ -242,6 +251,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Create a new AbstractApplicationContext with no parent.
+	 * 创建AbstractApplicationContext
 	 */
 	public AbstractApplicationContext() {
 		this.resourcePatternResolver = getResourcePatternResolver();
@@ -252,6 +262,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @param parent the parent context
 	 */
 	public AbstractApplicationContext(@Nullable ApplicationContext parent) {
+		// 创建父类对象
 		this();
 		setParent(parent);
 	}
@@ -342,6 +353,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Create and return a new {@link StandardEnvironment}.
 	 * <p>Subclasses may override this method in order to supply
 	 * a custom {@link ConfigurableEnvironment} implementation.
+	 * 存储环境变量，从System对象中获取
 	 */
 	protected ConfigurableEnvironment createEnvironment() {
 		return new StandardEnvironment();
@@ -548,16 +560,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			// Prepare this context for refreshing.
 			/*
-				1.获取当前Enviroment对象，并加载当前系统的属性值到Enviroment对象中
-				2.准备监听器和时间的集合对象
+				1.获取当前Enviroment对象，并对当前环境对象进行验证
+				2.准备监听器和时间的集合对象（默认是空的）
 			 */
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
 			/*
-		 		通过 AbstractRefreshableApplicationContext 子类实现refreshBeanFactory
+		 		1.通过 AbstractRefreshableApplicationContext 子类实现refreshBeanFactory
 				创建DefaultListAbleBeanFactory工厂
-		 		lodeBeanDefinition 给 beanFactory装在BeanDefinition信息
+		 		2.lodeBeanDefinition 给 beanFactory装在BeanDefinition信息
 			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
@@ -629,8 +641,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
+		// 容器开始时间
 		this.startupDate = System.currentTimeMillis();
+		// 关闭标志位
 		this.closed.set(false);
+		// 开启标志位
 		this.active.set(true);
 
 		if (logger.isDebugEnabled()) {
@@ -653,7 +668,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Store pre-refresh ApplicationListeners...
 		if (this.earlyApplicationListeners == null) {
-			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
+			// 判断当前应用的监听器是否为空，如果不为空则加入到早期监听器集合中
+			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners); // 早期监听器
 		}
 		else {
 			// Reset local application listeners to pre-refresh state.
@@ -682,6 +698,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 初始化BeanFactory，并进行Xml读取，将BeanFactory复制到当前实体属性中
 		refreshBeanFactory();
 		return getBeanFactory();
 	}
