@@ -10,7 +10,7 @@ import org.springframework.wx.beans.Person;
 public class SpringTest {
 
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("");
+		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("org/springframework/wx/spring-wx.xml");
 		Person person = (Person) classPathXmlApplicationContext.getBean("Person");
 		System.out.println(person);
 	}
