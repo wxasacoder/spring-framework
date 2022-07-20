@@ -139,8 +139,10 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 			throws BeansException {
 
 		super(parent);
-		// 1.创建Enviroment（AbstratApplicationContext的类变量）对象（同时加载系统的环境变量至propertySource中）
+		// 1.创建Enviroment（存入AbstratApplicationContext的类变量）对象（同时加载系统的环境变量至propertySource中） StandArdEviroment
 		// 2.将配置文件名称中的占位符（递归替换），所以允许注入此类的(${dwdw${}})复杂写法
+		// 3. 所以入口是可以传入多个配置文件，并循环解析其占位符
+		// !!! 并将其configLocations 存入AbstractRefreshableConfigApplicationContext 中
 		setConfigLocations(configLocations);
 		if (refresh) {
 			refresh();

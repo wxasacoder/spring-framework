@@ -561,7 +561,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// Prepare this context for refreshing.
 			/*
 				1.获取当前Enviroment对象，并对当前环境对象进行验证
-				2.准备监听器和时间的集合对象（默认是空的）
+				2.准备监听器和时间的集合对象（默认是空的，在Spriongboot的时候可不为空）
 			 */
 			prepareRefresh();
 
@@ -645,9 +645,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		this.startupDate = System.currentTimeMillis();
 		// 关闭标志位
 		this.closed.set(false);
-		// 开启标志位
+		// 激活的标志位
 		this.active.set(true);
 
+		// 记录日志
 		if (logger.isDebugEnabled()) {
 			if (logger.isTraceEnabled()) {
 				logger.trace("Refreshing " + this);
