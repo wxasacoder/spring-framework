@@ -8,12 +8,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class StepOne {
 
-
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-${username}.xml");
-
-
-
+//		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-${username}.xml");
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-WUXIN.xml");
+		User person = (User) context.getBean("person");
+		System.out.println(person);
 
 
 	}
