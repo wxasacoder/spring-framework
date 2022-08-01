@@ -10,6 +10,9 @@ public class AnnoAC {
 
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(User.class);
-		System.out.println(annotationConfigApplicationContext.getBean("user"));
+		Object user = annotationConfigApplicationContext.getBean("user");
+		User user1 = (User) user;
+		((User) user).setId(1L);
+		System.err.println(user1);
 	}
 }
