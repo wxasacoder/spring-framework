@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
  * @date 2022/07/19 21:51:51
  */
 
-@Component
+@Component("wx")
 public class User {
 
 	private Long id;
