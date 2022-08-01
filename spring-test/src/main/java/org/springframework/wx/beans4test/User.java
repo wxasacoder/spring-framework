@@ -1,4 +1,4 @@
-package org.springframework.wx.ioc;
+package org.springframework.wx.beans4test;
 
 import org.springframework.stereotype.Component;
 

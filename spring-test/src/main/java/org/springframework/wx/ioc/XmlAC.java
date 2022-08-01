@@ -1,6 +1,7 @@
 package org.springframework.wx.ioc;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.wx.beans4test.User;
 
 /**
  * @author wuxin
