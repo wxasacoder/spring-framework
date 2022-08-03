@@ -149,7 +149,7 @@ class ConfigurationClassBeanDefinitionReader {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
 		for (BeanMethod beanMethod : configClass.getBeanMethods()) {
-			loadBeanDefinitionsForBeanMethod(beanMethod);
+			loadBeanDefinitionsForBeanMethod(beanMethod); // 将beanMethod 构建成beanDefination并注册
 		}
 
 		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
@@ -188,6 +188,7 @@ class ConfigurationClassBeanDefinitionReader {
 		String methodName = metadata.getMethodName();
 
 		// Do we need to mark the bean as skipped by its condition?
+		// 根据beanMethod 上的@Conditional判断是否要被过滤
 		if (this.conditionEvaluator.shouldSkip(metadata, ConfigurationPhase.REGISTER_BEAN)) {
 			configClass.skippedBeanMethods.add(methodName);
 			return;

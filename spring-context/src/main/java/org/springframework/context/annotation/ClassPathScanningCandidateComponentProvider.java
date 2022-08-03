@@ -313,6 +313,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
 		}
 		else {
+			// 扫描文件
 			return scanCandidateComponents(basePackage);
 		}
 	}
@@ -430,7 +431,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					if (isCandidateComponent(metadataReader)) {
 						ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 						sbd.setSource(resource);
-						if (isCandidateComponent(sbd)) {
+						if (isCandidateComponent(sbd)) { // 如果是被@component修饰的要加入cadidate
 							if (debugEnabled) {
 								logger.debug("Identified candidate component class: " + resource);
 							}

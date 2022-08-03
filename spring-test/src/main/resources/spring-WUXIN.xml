@@ -11,9 +11,7 @@
 		<property name="name" value="wuxin"></property>
 	</bean>
 
-<!--
 	<context:component-scan base-package="org.springframework.wx" annotation-config="true"></context:component-scan>
--->
 
 <!--	<bean class="org.springframework.wx.bfpp.MyBeanFactoryPostProcessor"></bean>-->
 

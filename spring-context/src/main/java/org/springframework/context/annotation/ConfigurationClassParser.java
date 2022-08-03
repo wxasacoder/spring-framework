@@ -225,6 +225,7 @@ class ConfigurationClassParser {
 
 
 	protected void processConfigurationClass(ConfigurationClass configClass, Predicate<String> filter) throws IOException {
+		// shouldSkip方法会判断是进一步处理AnnotationBefinition的Bean信息(conditional的生效只要是被识别到的bean 就可以进行校验)
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
 		}
@@ -249,6 +250,7 @@ class ConfigurationClassParser {
 		// Recursively process the configuration class and its superclass hierarchy.
 		SourceClass sourceClass = asSourceClass(configClass, filter);
 		do {
+			// 开始处理由@component 修饰的Bean的信息
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass, filter);
 		}
 		while (sourceClass != null);
@@ -270,15 +272,17 @@ class ConfigurationClassParser {
 			throws IOException {
 
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
-			// Recursively process any member (nested) classes first
+			// Recursively process any member (nested) classes first 递归将被@component 中的内部类
+			// 如果有内部类也被compponent修饰，也要扫描出来,并加入到candidate中去
 			processMemberClasses(configClass, sourceClass, filter);
 		}
 
-		// Process any @PropertySource annotations
+		// Process any @PropertySource annotations 处理property_source注解
 		for (AnnotationAttributes propertySource : AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), PropertySources.class,
 				org.springframework.context.annotation.PropertySource.class)) {
 			if (this.environment instanceof ConfigurableEnvironment) {
+				// 在此过程中会将properties 读取出来并解析,以k-v的形式存储到environment对象中
 				processPropertySource(propertySource);
 			}
 			else {
@@ -325,6 +329,7 @@ class ConfigurationClassParser {
 		}
 
 		// Process individual @Bean methods
+		// 处理看是否有被@Bean修饰的方法
 		Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(sourceClass);
 		for (MethodMetadata methodMetadata : beanMethods) {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));

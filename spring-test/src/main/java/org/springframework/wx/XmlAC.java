@@ -1,4 +1,4 @@
-package org.springframework.wx.ioc;
+package org.springframework.wx;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.wx.beans4test.User;
