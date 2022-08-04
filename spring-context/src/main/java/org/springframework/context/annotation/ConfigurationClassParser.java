@@ -171,6 +171,7 @@ class ConfigurationClassParser {
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
+				// 如果是AnnotatedBeanDefinition（注解扫描所得beanDefinition）则走此处
 				if (bd instanceof AnnotatedBeanDefinition) {
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
@@ -269,6 +270,7 @@ class ConfigurationClassParser {
 
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 			// Recursively process any member (nested) classes first
+			// 递归处理内部类
 			processMemberClasses(configClass, sourceClass, filter);
 		}
 
@@ -308,6 +310,8 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @Import annotations
+		// 此处的getImport()递归去解析import注解
+		// 将解析所得类，传入processImport进一步的处理
 		processImports(configClass, sourceClass, getImports(sourceClass), filter, true);
 
 		// Process any @ImportResource annotations

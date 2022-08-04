@@ -1,9 +1,12 @@
-package org.springframework.wx.ioctest;
+package org.springframework.wx.bfpp;
+
+import org.springframework.stereotype.Component;
 
 /**
  * @author wuxin
  * @date 2022/07/19 21:51:51
  */
+@Component
 public class User {
 
 	private Long id;
