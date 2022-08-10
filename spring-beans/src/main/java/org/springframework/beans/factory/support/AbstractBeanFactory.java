@@ -1788,6 +1788,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
 		// caller actually wants a reference to the factory.
+		// 如果从缓存中获取的bean之后，需要去判定这个bean 是否是factoryBean 如果不是则直接返回
 		if (!(beanInstance instanceof FactoryBean<?> factoryBean)) {
 			return beanInstance;
 		}
@@ -1797,8 +1798,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			mbd.isFactoryBean = true;
 		}
 		else {
-			object = getCachedObjectForFactoryBean(beanName); //先从FactoryBean中拿实体
-		} // 如果等于null，那么说名还没有获取过，继续获取
+			object = getCachedObjectForFactoryBean(beanName); //先从FactoryBean缓存中拿实体
+		} // 如果等于null，那么FactoryBean还没有获取过，继续获取
 		if (object == null) {
 			// Return bean instance from factory.
 			// Caches object obtained from FactoryBean if it is a singleton.
