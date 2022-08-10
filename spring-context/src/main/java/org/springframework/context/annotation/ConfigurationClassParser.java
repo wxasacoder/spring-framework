@@ -192,6 +192,7 @@ class ConfigurationClassParser {
 			}
 		}
 
+		// 处理@import标签的时候，加入的需要延时处理的seletor，此处进行处理
 		this.deferredImportSelectorHandler.process();
 	}
 
@@ -314,6 +315,8 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @Import annotations
+		// getImports(sourceClass)将import注解中的类解析出来，返回成集合
+		// 传入processImports()进行处理-将导入的外部类实例化并加入handler中
 		processImports(configClass, sourceClass, getImports(sourceClass), filter, true);
 
 		// Process any @ImportResource annotations
@@ -581,9 +584,11 @@ class ConfigurationClassParser {
 						if (selectorFilter != null) {
 							exclusionFilter = exclusionFilter.or(selectorFilter);
 						}
+						// 如果是需要延时进行处理的selector那么会在外层进行处理
 						if (selector instanceof DeferredImportSelector) {
 							this.deferredImportSelectorHandler.handle(configClass, (DeferredImportSelector) selector);
 						}
+						// 出了需要延时处理的selector则直接执行
 						else {
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames, exclusionFilter);
@@ -600,10 +605,12 @@ class ConfigurationClassParser {
 						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
 					}
 					else {
+						// 如果不是上面任何一个类那么import的类会被当作@Configuration的类进行处理
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class
 						this.importStack.registerImport(
 								currentSourceClass.getMetadata(), candidate.getMetadata().getClassName());
+						// 以@Configuration的方式对这个类进行处理
 						processConfigurationClass(candidate.asConfigClass(configClass), exclusionFilter);
 					}
 				}

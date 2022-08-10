@@ -112,7 +112,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 								afterSingletonCreation(beanName);
 							}
 						}
-						if (containsSingleton(beanName)) {
+						if (containsSingleton(beanName)) { // 只有单列的才会放入缓存池
 							this.factoryBeanObjectCache.put(beanName, object);
 						}
 					}

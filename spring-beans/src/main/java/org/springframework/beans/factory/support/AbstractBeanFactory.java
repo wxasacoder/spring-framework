@@ -245,6 +245,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object beanInstance;
 
 		// Eagerly check singleton cache for manually registered singletons.
+		// 先从正常的bean的缓存中拿到FactoryBean的实现本体
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
@@ -1770,6 +1771,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
+		// 判断name时否是已&开头的，如果是以&开头的则是拿的factoryBean的实现类本体
 		if (BeanFactoryUtils.isFactoryDereference(name)) {
 			if (beanInstance instanceof NullBean) {
 				return beanInstance;
@@ -1795,8 +1797,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			mbd.isFactoryBean = true;
 		}
 		else {
-			object = getCachedObjectForFactoryBean(beanName);
-		}
+			object = getCachedObjectForFactoryBean(beanName); //先从FactoryBean中拿实体
+		} // 如果等于null，那么说名还没有获取过，继续获取
 		if (object == null) {
 			// Return bean instance from factory.
 			// Caches object obtained from FactoryBean if it is a singleton.
