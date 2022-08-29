@@ -415,11 +415,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
-		Set<BeanDefinition> candidates = new LinkedHashSet<>();
+		Set<BeanDefinition> candidates = new LinkedHashSet<>(); // 扫描所得后选择
 		try {
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
-			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
+			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath); // 通过扫描器获取指定包下面得文件
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
 			for (Resource resource : resources) {
@@ -427,7 +427,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					logger.trace("Scanning " + resource);
 				}
 				try {
-					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource); // 对resource进一步包装，其中这个类将resouce文件解析成类，存于类变量中
 					if (isCandidateComponent(metadataReader)) {
 						ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 						sbd.setSource(resource);

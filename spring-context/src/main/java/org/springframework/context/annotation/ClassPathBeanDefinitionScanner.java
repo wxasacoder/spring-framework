@@ -250,7 +250,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 */
 	public int scan(String... basePackages) {
 		int beanCountAtScanStart = this.registry.getBeanDefinitionCount();
-
+		// 开始进行包扫描
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
@@ -271,7 +271,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 */
 	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
-		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
+		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();// 扫描所得defination
 		for (String basePackage : basePackages) {
 			// 从几个磁盘扫描文件取出那些被@Componet修饰的类
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
