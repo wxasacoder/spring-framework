@@ -11,4 +11,9 @@ public class InstanceFactory {
 		return apple;
 	}
 
+	public static Apple getAppleStatic(){
+		Apple apple = new Apple();
+		return apple;
+	}
+
 }

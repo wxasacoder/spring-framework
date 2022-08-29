@@ -1,0 +1,2 @@
+使用工厂方法指定了工厂方法实例化的时候
+不会走反射创建而是直接调用factoryMethod创建bean并存入singleTon中

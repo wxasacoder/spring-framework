@@ -111,7 +111,7 @@ public class InjectionMetadata {
 		for (InjectedElement element : this.injectedElements) {
 			Member member = element.getMember();
 			if (!beanDefinition.isExternallyManagedConfigMember(member)) {
-				beanDefinition.registerExternallyManagedConfigMember(member);
+				beanDefinition.registerExternallyManagedConfigMember(member); // 将获得到的@postConstruct方法和@preDestroy方法加入beanDefinition中
 				checkedElements.add(element);
 			}
 		}

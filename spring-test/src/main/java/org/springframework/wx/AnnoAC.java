@@ -1,6 +1,8 @@
 package org.springframework.wx;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.wx.beans4test.methodOveride.Student;
+import org.springframework.wx.beans4test.methodOveride.Teacher;
 
 /**
  * @author wuxin
@@ -17,11 +19,25 @@ public class AnnoAC {
 //		Teacher myFactoryBean = (Teacher) annotationConfigApplicationContext.getBean("myFactoryBean");
 //		Object bean = annotationConfigApplicationContext.getBean("&myFactoryBean");
 
-		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.factoryMethod");
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.factoryMethod");
+//
+//		annotationConfigApplicationContext.getBean("user");
 
-		annotationConfigApplicationContext.getBean("user");
-
-
+		/**
+		 * lookup-method测试
+		 */
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.methodOveride");
+//		Student student = (Student) annotationConfigApplicationContext.getBean("student");
+//		System.out.println(student.getTeacher());
+//		System.out.println(student.getTeacher());
+		/**
+		 * post-construct 和 preDestroy测试
+		 */
+		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.postConstrutAndDestory");
+		annotationConfigApplicationContext.getBean("CCP");
+		annotationConfigApplicationContext.close();
+//		System.out.println(student.getTeacher());
+//		System.out.println(student.getTeacher());
 
 	}
 }

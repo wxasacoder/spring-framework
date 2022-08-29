@@ -61,14 +61,14 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 			Constructor<?> constructorToUse;
 			synchronized (bd.constructorArgumentLock) {
 				constructorToUse = (Constructor<?>) bd.resolvedConstructorOrFactoryMethod;
-				if (constructorToUse == null) {
+				if (constructorToUse == null) { // 这里想相当于一个缓存，如果在bd中是没有拿到构造器的，说明该bd的构造器是没有被解析过的。
 					final Class<?> clazz = bd.getBeanClass();
 					if (clazz.isInterface()) {
 						throw new BeanInstantiationException(clazz, "Specified class is an interface");
 					}
 					try {
 						constructorToUse = clazz.getDeclaredConstructor();
-						bd.resolvedConstructorOrFactoryMethod = constructorToUse;
+						bd.resolvedConstructorOrFactoryMethod = constructorToUse; // 拿到构造器之后，将其设置到bd中
 					}
 					catch (Throwable ex) {
 						throw new BeanInstantiationException(clazz, "No default constructor found", ex);

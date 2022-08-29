@@ -256,8 +256,8 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 			return this.emptyLifecycleMetadata;
 		}
 
-		List<LifecycleElement> initMethods = new ArrayList<>();
-		List<LifecycleElement> destroyMethods = new ArrayList<>();
+		List<LifecycleElement> initMethods = new ArrayList<>(); // @postConstruct
+		List<LifecycleElement> destroyMethods = new ArrayList<>(); //@preDestroy
 		Class<?> targetClass = clazz;
 
 		do {

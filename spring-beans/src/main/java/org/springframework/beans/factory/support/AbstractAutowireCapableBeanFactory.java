@@ -510,7 +510,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					beanName, "Validation of method overrides failed", ex);
 		}
 
-		try {
+		try { // InstantiationAwareBeanPostProcessor 的实现去返回通过这个bpp创建的bean
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
@@ -571,10 +571,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			mbd.resolvedTargetType = beanType;
 		}
 
+		// MergeBeanDefinitionPostProcessor去修改BeanDefinition
 		// Allow post-processors to modify the merged bean definition.
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
+					// @postConstruct 和 @preDestroy 注解正是在此处处理的,放入BeanDefinition中 已经@Resourse注解
+					/**
+					 * 解析得得初始化方法  resourse 注入得字段，都会被放在 mergedBeanDefinitions中
+					 * @postContruct得方法会被放在externallyManagedInitMethods中
+					 * @preDestroy得方法会被放在externallyManagedDestroyMethods中
+					 * @Resourse 注入得字段会被放在externallyManagedConfigMembers中
+					 */
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
 				catch (Throwable ex) {
@@ -594,7 +602,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.trace("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
-			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
+			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));// 暴露早期工厂
 		}
 
 		// Initialize the bean instance.
@@ -1078,7 +1086,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
 		for (MergedBeanDefinitionPostProcessor processor : getBeanPostProcessorCache().mergedDefinition) {
-			processor.postProcessMergedBeanDefinition(mbd, beanType, beanName);
+			// CommonAnnotationBeanPostProcessor 处理 @postConstruct 和 @preDestroy 注解正是在此处处理的
+			processor.postProcessMergedBeanDefinition(mbd, beanType, beanName);// 此处加入beanDefinition中
 		}
 	}
 
