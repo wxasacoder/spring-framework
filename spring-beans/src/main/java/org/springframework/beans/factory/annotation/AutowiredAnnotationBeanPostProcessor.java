@@ -300,8 +300,8 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	}
 
 	private InjectionMetadata findInjectionMetadata(String beanName, Class<?> beanType, RootBeanDefinition beanDefinition) {
-		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
-		metadata.checkConfigMembers(beanDefinition);
+		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null); // 处理@Autowired 和@value注入的字段
+		metadata.checkConfigMembers(beanDefinition); // 将被这些注解修饰的字段放入至externallyManagedConfigMembers中
 		return metadata;
 	}
 
@@ -508,7 +508,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		return metadata;
 	}
 
-	private InjectionMetadata buildAutowiringMetadata(Class<?> clazz) {
+	private InjectionMetadata buildAutowiringMetadata(Class<?> clazz) { // 此方法用于出处理@value 和@Autowird
 		if (!AnnotationUtils.isCandidateClass(clazz, this.autowiredAnnotationTypes)) {
 			return InjectionMetadata.EMPTY;
 		}
@@ -518,9 +518,9 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 		do {
 			final List<InjectionMetadata.InjectedElement> currElements = new ArrayList<>();
-
+			// 处理filed
 			ReflectionUtils.doWithLocalFields(targetClass, field -> {
-				MergedAnnotation<?> ann = findAutowiredAnnotation(field);
+				MergedAnnotation<?> ann = findAutowiredAnnotation(field); // 取出被 @Autowired 和@value的 修饰的 filed
 				if (ann != null) {
 					if (Modifier.isStatic(field.getModifiers())) {
 						if (logger.isInfoEnabled()) {
@@ -532,9 +532,9 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 					currElements.add(new AutowiredFieldElement(field, required));
 				}
 			});
-
+			// 处理method
 			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
-				Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
+				Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(method); // 取出被@Autowired 和@value的 修饰的method
 				if (!BridgeMethodResolver.isVisibilityBridgeMethodPair(method, bridgedMethod)) {
 					return;
 				}

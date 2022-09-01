@@ -578,10 +578,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				try {
 					// @postConstruct 和 @preDestroy 注解正是在此处处理的,放入BeanDefinition中 已经@Resourse注解
 					/**
+					 * 均由 CommonAnnotationBeanPostProcessor 处理
 					 * 解析得得初始化方法  resourse 注入得字段，都会被放在 mergedBeanDefinitions中
 					 * @postContruct得方法会被放在externallyManagedInitMethods中
 					 * @preDestroy得方法会被放在externallyManagedDestroyMethods中
 					 * @Resourse 注入得字段会被放在externallyManagedConfigMembers中
+					 */
+					// @Autowired 和@value也是在此处处理
+					/**
+					 * 由  AutowiredAnnotationBeanPostProcessor 进行处理
+					 * 其解析所得需要注入的字段同样也会存在于externallyManagedConfigMembers
 					 */
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}

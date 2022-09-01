@@ -16,6 +16,9 @@ public class AnnoAC {
 //		User wx = (User) annotationConfigApplicationContext.getBean("wx");
 //		System.out.println(wx);
 
+		/**
+		 * factoryBean 测试
+		 */
 //		Teacher myFactoryBean = (Teacher) annotationConfigApplicationContext.getBean("myFactoryBean");
 //		Object bean = annotationConfigApplicationContext.getBean("&myFactoryBean");
 
@@ -31,13 +34,11 @@ public class AnnoAC {
 //		System.out.println(student.getTeacher());
 //		System.out.println(student.getTeacher());
 		/**
-		 * post-construct 和 preDestroy测试
+		 * post-construct 和 preDestroy测试 @resouse测试
 		 */
-		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.postConstrutAndDestory");
-		annotationConfigApplicationContext.getBean("CCP");
-		annotationConfigApplicationContext.close();
-//		System.out.println(student.getTeacher());
-//		System.out.println(student.getTeacher());
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.postConstrutAndDestory");
+//		annotationConfigApplicationContext.getBean("CCP");
+//		annotationConfigApplicationContext.close();
 
 	}
 }

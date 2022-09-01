@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class CCP {
 
 	/**
-	 * CommonAnnotationBeanPostProcessor 也是被此处理，并将 解析得到得信息存放到mergeBeanDefinition中
+	 * CommonAnnotationBeanPostProcessor 也是被此处理，并将 解析得到得信息存放到mergeBeanDefinition中的externallyManagedConfigMembers集合中
 	 */
 	@Resource
 	private ABean4TestResourse aBean4TestResourse;
