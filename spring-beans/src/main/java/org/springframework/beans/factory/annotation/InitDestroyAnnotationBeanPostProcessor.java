@@ -189,7 +189,7 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		LifecycleMetadata metadata = findLifecycleMetadata(bean.getClass());
 		try {
-			metadata.invokeInitMethods(bean, beanName);
+			metadata.invokeInitMethods(bean, beanName); // postConstrut在此执行
 		}
 		catch (InvocationTargetException ex) {
 			throw new BeanCreationException(beanName, "Invocation of init method failed", ex.getTargetException());

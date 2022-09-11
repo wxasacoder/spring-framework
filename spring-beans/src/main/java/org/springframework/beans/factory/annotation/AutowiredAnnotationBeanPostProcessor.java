@@ -712,7 +712,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 			TypeConverter typeConverter = beanFactory.getTypeConverter();
 			Object value;
 			try {
-				value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);
+				value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter); // 根据类型去查找需要注入的bean
 			}
 			catch (BeansException ex) {
 				throw new UnsatisfiedDependencyException(null, beanName, new InjectionPoint(field), ex);

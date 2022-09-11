@@ -1,6 +1,7 @@
 package org.springframework.wx;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.wx.beans4test.circularReference.A;
 import org.springframework.wx.beans4test.methodOveride.Student;
 import org.springframework.wx.beans4test.methodOveride.Teacher;
 
@@ -19,12 +20,13 @@ public class AnnoAC {
 		/**
 		 * factoryBean 测试
 		 */
-//		Teacher myFactoryBean = (Teacher) annotationConfigApplicationContext.getBean("myFactoryBean");
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.facBean");
+//		System.out.println(annotationConfigApplicationContext.getBean("myFactoryBean"));
+//		System.out.println(annotationConfigApplicationContext.getBean("myFactoryBean"));
 //		Object bean = annotationConfigApplicationContext.getBean("&myFactoryBean");
-
-//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.factoryMethod");
-//
-//		annotationConfigApplicationContext.getBean("user");
+//		Object bean1 = annotationConfigApplicationContext.getBean("&myFactoryBean");
+//		System.out.println(bean);
+//		System.out.println(bean1);
 
 		/**
 		 * lookup-method测试
@@ -39,6 +41,13 @@ public class AnnoAC {
 //		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.postConstrutAndDestory");
 //		annotationConfigApplicationContext.getBean("CCP");
 //		annotationConfigApplicationContext.close();
+
+		/**
+		 * 注入一个系统环境变量 Autowird 注入的探究
+		 */
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.populateBean");
+//		annotationConfigApplicationContext.getBean("autowriedAMap");
+
 
 	}
 }

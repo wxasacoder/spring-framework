@@ -154,10 +154,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
-			if (!this.singletonObjects.containsKey(beanName)) {
-				this.singletonFactories.put(beanName, singletonFactory);
-				this.earlySingletonObjects.remove(beanName);
-				this.registeredSingletons.add(beanName);
+			if (!this.singletonObjects.containsKey(beanName)) {// 如果一级缓存中不存在当前的bean
+				this.singletonFactories.put(beanName, singletonFactory); // 将工厂放入至三级缓存中
+				this.earlySingletonObjects.remove(beanName); // 将二级缓存中的该对象删除
+				this.registeredSingletons.add(beanName); // 将加入与及缓存
 			}
 		}
 	}
@@ -192,8 +192,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 							ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 							if (singletonFactory != null) {
 								singletonObject = singletonFactory.getObject();
-								this.earlySingletonObjects.put(beanName, singletonObject);
 								this.singletonFactories.remove(beanName);
+								this.earlySingletonObjects.put(beanName, singletonObject);
 							}
 						}
 					}

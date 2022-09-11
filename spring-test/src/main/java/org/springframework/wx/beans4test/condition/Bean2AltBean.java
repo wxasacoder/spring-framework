@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * 在将@Bean 处理完毕之后会将BeanMethod存入ConfigurationClass中,
  * 再loadBeanDefinition的时候会根据method上所具有的conditional条件判断是否该把
  * 改bean信息注册到DefinitionMap中
+ * 上述的注解都是 ConfigurationClassPostProcessor 在这个bfpp中进行执行  并将解析的结果放入至beanDefinantionMap中  等待后续的实例化
  *
  */
 @Configuration
