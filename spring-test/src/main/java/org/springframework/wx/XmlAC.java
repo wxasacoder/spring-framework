@@ -1,9 +1,8 @@
 package org.springframework.wx;
 
-import org.apache.bcel.util.ClassPath;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.cglib.core.DebuggingClassWriter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.wx.beans4test.User;
+import org.springframework.wx.aop.RandomService;
 import org.springframework.wx.beans4test.circularReference.A;
 
 /**
@@ -28,12 +27,29 @@ public class XmlAC {
 //		ClassPathXmlApplicationContext context1 = new ClassPathXmlApplicationContext("spring-value.xml");
 //		context1.getBean("plate");
 
-		/**
-		 * 循环依赖的测试
-		 */
-		ClassPathXmlApplicationContext annotationConfigApplicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
-		A a = (A) annotationConfigApplicationContext.getBean("a");
-		a.saySomething();
+//		/**
+//		 * 循环依赖的测试
+//		 */
+//		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "D:\\Idea_Work_Space\\spring-framework\\spring-test\\src\\main\\java\\org\\springframework\\wx\\beans4test\\circularReference");
+//
+//		ClassPathXmlApplicationContext annotationConfigApplicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
+//
+//
+//
+//		A a = (A) annotationConfigApplicationContext.getBean("a");
+//
+//		a.saySomething();
+////		System.out.println(a.getB());
+//		a.saySomething();
+
+		// aop 相关的测试
+		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
+
+		RandomService randomService = (RandomService) classPathXmlApplicationContext.getBean("randomService");
+
+		randomService.doSomething();
+
+
 	}
 
 

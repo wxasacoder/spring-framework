@@ -1,7 +1,7 @@
 package org.springframework.wx.beans4test.circularReference;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author wuxin
@@ -11,11 +11,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class A {
 
+	@Autowired
+	public B  b;
 
-
+//	public B getB() {
+//		return b;
+//	}
+//
+//	public void setB(B b) {
+//		this.b = b;
+//	}
 
 	public void saySomething(){
-		System.out.println("say something you given upon me");
+//		System.out.println("say something you given upon me");
+		b.saySomething();
 	}
 
 
