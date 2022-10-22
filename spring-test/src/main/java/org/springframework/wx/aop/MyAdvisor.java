@@ -1,6 +1,8 @@
 package org.springframework.wx.aop;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 
 /**
  * @author wuxin
@@ -8,7 +10,15 @@ import org.aspectj.lang.ProceedingJoinPoint;
  */
 public class MyAdvisor {
 
-	public void myBefore(){
+	public void myBefore(JoinPoint joinPoint){
+		Object[] args = joinPoint.getArgs();
+		Signature signature = joinPoint.getSignature();
+		System.out.println("*******************************************");
+		System.out.println(args);
+		System.out.println(signature);
+		System.out.println(signature.getName());
+		System.out.println("*******************************************");
+
 		System.out.println("------before advisor------");
 	}
 

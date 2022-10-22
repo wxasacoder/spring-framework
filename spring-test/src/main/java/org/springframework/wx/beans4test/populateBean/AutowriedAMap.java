@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -39,8 +41,22 @@ public class AutowriedAMap {
 	private Map<String,AInter> aInterMap;
 
 
+	private List<AInter> autowiredByConstuctor = new ArrayList<>();
+
+	public AutowriedAMap(List<AInter> autowiredByConstuctor) {
+		this.autowiredByConstuctor = autowiredByConstuctor;
+	}
+
 	@Autowired
 	private Map<AInterImpl,AInterImpl> customeMap;
+
+	public List<AInter> getAutowiredByConstuctor() {
+		return autowiredByConstuctor;
+	}
+
+	public void setAutowiredByConstuctor(List<AInter> autowiredByConstuctor) {
+		this.autowiredByConstuctor = autowiredByConstuctor;
+	}
 
 	public Map<String, StandardEnvironment> getStandardEnvironmentMap() {
 		return standardEnvironmentMap;

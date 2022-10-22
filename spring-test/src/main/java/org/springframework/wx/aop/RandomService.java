@@ -10,4 +10,8 @@ public class RandomService {
 		System.out.println("..................do business logic.....................");
 	}
 
+	public void doSomethingElse(){
+		System.out.println("..................do something else logic.....................");
+	}
+
 }

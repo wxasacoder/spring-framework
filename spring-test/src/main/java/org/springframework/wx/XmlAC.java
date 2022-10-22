@@ -43,9 +43,14 @@ public class XmlAC {
 //		a.saySomething();
 
 		// aop 相关的测试
+		// 将aspectJ生成的的类生成到磁盘
+		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY,"D:\\Idea_Work_Space\\spring-framework\\spring-test\\src\\main\\java\\org\\springframework\\wx\\aop");
+
 		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
 
 		RandomService randomService = (RandomService) classPathXmlApplicationContext.getBean("randomService");
+
+		randomService.doSomethingElse();
 
 		randomService.doSomething();
 

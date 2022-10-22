@@ -8,16 +8,30 @@
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<bean id="myAdvisor" class="org.springframework.wx.aop.MyAdvisor"></bean>
+	<bean id="myAdvisor2" class="org.springframework.wx.aop.MyAdvisor2"></bean>
 
 	<bean id="randomService" class="org.springframework.wx.aop.RandomService"></bean>
 
+	<!--启用cjlib的动态代理-->
+	<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true"></aop:aspectj-autoproxy>
 	<aop:config>
 		<aop:aspect ref="myAdvisor">
-			<aop:pointcut id="point_cut" expression="execution(* org.springframework.wx.aop.RandomService.*(..))" />
+			<aop:pointcut id="point_cut" expression="execution(* org.springframework.wx.aop.RandomService.doSomething(..))" />
 			<aop:before method="myBefore" pointcut-ref="point_cut"/>
 		<!--	<aop:after method="myAfter" pointcut-ref="point_cut"/>
 			<aop:after-returning method="myAfterReturning" pointcut-ref="point_cut"/>
 			<aop:after-throwing method="myAfterReturning" pointcut-ref="point_cut"/>-->
+
+			<!-- 设置前置和后置之后，不要再设置around
+				<aop:around method="myAround" pointcut-ref="point_cut"/>
+			-->
+		</aop:aspect>
+		<aop:aspect ref="myAdvisor2">
+			<aop:pointcut id="point_cut" expression="execution(* org.springframework.wx.aop.RandomService.doSomething(..))" />
+			<aop:around method="myAround" pointcut-ref="point_cut"/>
+			<!--	<aop:after method="myAfter" pointcut-ref="point_cut"/>
+				<aop:after-returning method="myAfterReturning" pointcut-ref="point_cut"/>
+				<aop:after-throwing method="myAfterReturning" pointcut-ref="point_cut"/>-->
 
 			<!-- 设置前置和后置之后，不要再设置around
 				<aop:around method="myAround" pointcut-ref="point_cut"/>

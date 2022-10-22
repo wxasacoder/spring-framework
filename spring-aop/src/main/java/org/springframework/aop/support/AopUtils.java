@@ -244,7 +244,7 @@ public abstract class AopUtils {
 		}
 		classes.addAll(ClassUtils.getAllInterfacesForClassAsSet(targetClass));
 
-		for (Class<?> clazz : classes) {
+		for (Class<?> clazz : classes) { // 判断当前的类是否需要被代理
 			Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);
 			for (Method method : methods) {
 				if (introductionAwareMethodMatcher != null ?
@@ -295,7 +295,7 @@ public abstract class AopUtils {
 
 	/**
 	 * Determine the sublist of the {@code candidateAdvisors} list
-	 * that is applicable to the given class.
+	 * that is applicable to the given class.  判断给定的candidateAdvisors 中是否有匹配到given class的增强
 	 * @param candidateAdvisors the Advisors to evaluate
 	 * @param clazz the target class
 	 * @return sublist of Advisors that can apply to an object of the given class
