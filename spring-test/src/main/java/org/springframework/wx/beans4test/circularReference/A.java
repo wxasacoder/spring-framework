@@ -1,7 +1,9 @@
 package org.springframework.wx.beans4test.circularReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author wuxin
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+@Order(100)
 public class A {
 
 	@Autowired

@@ -1,7 +1,8 @@
 package org.springframework.wx.beans4test.circularReference;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +20,10 @@ public class AnPointCutClass {
 
 	}
 
-	@Before("pointCut()")
-	public void before(){
+	@Around("pointCut()")
+	public void around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		System.out.println("before................................................................");
+		proceedingJoinPoint.proceed();
 	}
 
 

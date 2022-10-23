@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+		https://www.springframework.org/schema/context/spring-context.xsd
+">
+
+	<context:component-scan base-package="org.springframework.wx" annotation-config="true"></context:component-scan>
+
+	<bean id="a" class="org.springframework.wx.beans4test.circularReference.A"></bean>
+	<bean id="b" class="org.springframework.wx.beans4test.circularReference.B"></bean>
+	<bean id="anPointCutClass" class="org.springframework.wx.beans4test.circularReference.AnPointCutClass"></bean>
+	<bean id="bnPointCutClass" class="org.springframework.wx.beans4test.circularReference.BnPointCutClass"></bean>
+
+
+	<!--启用cjlib的动态代理 并暴露代理-->
+	<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true"></aop:aspectj-autoproxy>
+
+	<aop:config>
+		<aop:aspect ref="anPointCutClass">
+			<aop:pointcut id="point_cut" expression="execution(* org.springframework.wx.beans4test.circularReference.A.saySomething(..))" />
+			<aop:around method="around" pointcut-ref="point_cut"/>
+			<!--	<aop:after method="myAfter" pointcut-ref="point_cut"/>
+				<aop:after-returning method="myAfterReturning" pointcut-ref="point_cut"/>
+				<aop:after-throwing method="myAfterReturning" pointcut-ref="point_cut"/>-->
+
+			<!-- 设置前置和后置之后，不要再设置around
+				<aop:around method="myAround" pointcut-ref="point_cut"/>
+			-->
+		</aop:aspect>
+		<aop:aspect ref="bnPointCutClass">
+			<aop:pointcut id="point_cut" expression="execution(* org.springframework.wx.beans4test.circularReference.B.saySomething(..))" />
+			<aop:around method="before" pointcut-ref="point_cut"/>
+			<!--	<aop:after method="myAfter" pointcut-ref="point_cut"/>
+				<aop:after-returning method="myAfterReturning" pointcut-ref="point_cut"/>
+				<aop:after-throwing method="myAfterReturning" pointcut-ref="point_cut"/>-->
+
+			<!-- 设置前置和后置之后，不要再设置around
+				<aop:around method="myAround" pointcut-ref="point_cut"/>
+			-->
+		</aop:aspect>
+	</aop:config>
+
+
+</beans>

@@ -4,6 +4,7 @@ import org.springframework.cglib.core.DebuggingClassWriter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.wx.aop.RandomService;
 import org.springframework.wx.beans4test.circularReference.A;
+import org.springframework.wx.beans4test.circularReference.B;
 
 /**
  * @author wuxin
@@ -30,29 +31,28 @@ public class XmlAC {
 //		/**
 //		 * 循环依赖的测试
 //		 */
-//		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "D:\\Idea_Work_Space\\spring-framework\\spring-test\\src\\main\\java\\org\\springframework\\wx\\beans4test\\circularReference");
+		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "D:\\Idea_Work_Space\\spring-framework\\spring-test\\src\\main\\java\\org\\springframework\\wx\\beans4test\\circularReference");
+
+		ClassPathXmlApplicationContext annotationConfigApplicationContext = new ClassPathXmlApplicationContext("spring-circular.xml");
 //
-//		ClassPathXmlApplicationContext annotationConfigApplicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
-//
-//
-//
-//		A a = (A) annotationConfigApplicationContext.getBean("a");
-//
-//		a.saySomething();
-////		System.out.println(a.getB());
-//		a.saySomething();
+		A a = (A) annotationConfigApplicationContext.getBean("a");
+		B b = (B) annotationConfigApplicationContext.getBean("b");
+		System.out.println(a.b);
+		a.saySomething();
+//		System.out.println(a.getB());
+
 
 		// aop 相关的测试
 		// 将aspectJ生成的的类生成到磁盘
-		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY,"D:\\Idea_Work_Space\\spring-framework\\spring-test\\src\\main\\java\\org\\springframework\\wx\\aop");
-
-		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
-
-		RandomService randomService = (RandomService) classPathXmlApplicationContext.getBean("randomService");
-
-		randomService.doSomethingElse();
-
-		randomService.doSomething();
+//		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY,"D:\\Idea_Work_Space\\spring-framework\\spring-test\\src\\main\\java\\org\\springframework\\wx\\aop");
+//
+//		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("spring-aop.xml");
+//
+//		RandomService randomService = (RandomService) classPathXmlApplicationContext.getBean("randomService");
+//
+//		randomService.doSomethingElse();
+//
+//		randomService.doSomething();
 
 
 	}
