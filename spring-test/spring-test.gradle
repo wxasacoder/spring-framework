@@ -37,6 +37,7 @@ dependencies {
 	optional("org.seleniumhq.selenium:selenium-java") {
 		exclude group: "net.bytebuddy", module: "byte-buddy"
 	}
+	implementation("com.mysql:mysql-connector-j:8.0.31")
 	optional("org.xmlunit:xmlunit-matchers")
 	optional("org.skyscreamer:jsonassert")
 	optional("com.jayway.jsonpath:json-path")

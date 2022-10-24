@@ -2,9 +2,11 @@ package org.springframework.wx;
 
 import org.springframework.cglib.core.DebuggingClassWriter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.wx.aop.RandomService;
 import org.springframework.wx.beans4test.circularReference.A;
 import org.springframework.wx.beans4test.circularReference.B;
+import org.springframework.wx.tx.StudentService;
 
 /**
  * @author wuxin
@@ -31,14 +33,14 @@ public class XmlAC {
 //		/**
 //		 * 循环依赖的测试
 //		 */
-		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "D:\\Idea_Work_Space\\spring-framework\\spring-test\\src\\main\\java\\org\\springframework\\wx\\beans4test\\circularReference");
+//		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "D:\\Idea_Work_Space\\spring-framework\\spring-test\\src\\main\\java\\org\\springframework\\wx\\beans4test\\circularReference");
 
-		ClassPathXmlApplicationContext annotationConfigApplicationContext = new ClassPathXmlApplicationContext("spring-circular.xml");
+//		ClassPathXmlApplicationContext annotationConfigApplicationContext = new ClassPathXmlApplicationContext("spring-circular.xml");
 //
-		A a = (A) annotationConfigApplicationContext.getBean("a");
-		B b = (B) annotationConfigApplicationContext.getBean("b");
-		System.out.println(a.b);
-		a.saySomething();
+//		A a = (A) annotationConfigApplicationContext.getBean("a");
+//		B b = (B) annotationConfigApplicationContext.getBean("b");
+//		System.out.println(a.b);
+//		a.saySomething();
 //		System.out.println(a.getB());
 
 
@@ -54,7 +56,13 @@ public class XmlAC {
 //
 //		randomService.doSomething();
 
-
+		// 事物测试
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-tx.xml");
+//		JdbcTemplate jdbcTemplate = (JdbcTemplate)applicationContext.getBean("jdbcTemplate");
+//		String sql = "INSERT INTO student(name,age,gender) values ('锤子',12,1)";
+//		jdbcTemplate.update(sql);
+		StudentService studentService = (StudentService) applicationContext.getBean("studentService");
+		studentService.insertStudentBatch();
 	}
 
 
