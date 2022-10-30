@@ -162,7 +162,7 @@ public abstract class AnnotationConfigUtils {
 		Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
 
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
-			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
+			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);// 处理@Configuration等
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
 		}

@@ -245,8 +245,10 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 	/**
 	 * Derive further bean definitions from the configuration classes in the registry.
-	 * BDRPP 子类所实现得方法
+	 * BDRPP 实现方法
+	 * 这里会对下述注解进行，进一步的处理
 	 * @Bean,@Component,@ComponentScan,@import,@Cnofiguration都会在在此处解析
+	 * @configuration 所修饰类，会被标记为full，其他的都会被标记为lite
 	 */
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
@@ -265,6 +267,10 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	}
 
 	/**
+	 * BFPP的实现
+	 * @see ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry(BeanDefinitionRegistry)
+	 * 经过上述方法之后，bd中会有lite or full标记
+	 * @see ConfigurationClassPostProcessor#enhanceConfigurationClasses(ConfigurableListableBeanFactory) 此方法正是对full的bd生成的代理增强的地方
 	 * Prepare the Configuration classes for servicing bean requests at runtime
 	 * by replacing them with CGLIB-enhanced subclasses.
 	 */
@@ -282,7 +288,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			processConfigBeanDefinitions((BeanDefinitionRegistry) beanFactory);
 		}
 
-		enhanceConfigurationClasses(beanFactory);
+		enhanceConfigurationClasses(beanFactory); // 对被@configutation修饰的类生成代理类，覆盖原始类放入beanDefinitionMap中，先不实例化，等待后续实例化
 		beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));
 	}
 
@@ -299,9 +305,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 * {@link Configuration} classes.
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
-		// 定义需要处理得BeanDefination得集合
+		// 定义需要处理得BeanDefinition得集合
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
-		// 拿到所有已经注册了得BeanDefination去循环判断，是否需要进行处理
+		// 拿到所有已经注册了得BeanDefinition去循环判断，是否需要进行处理
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
 		// 筛选需要得BeanDefinition

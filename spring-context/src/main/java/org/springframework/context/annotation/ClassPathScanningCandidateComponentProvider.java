@@ -417,7 +417,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
 		Set<BeanDefinition> candidates = new LinkedHashSet<>(); // 扫描所得后选择
 		try {
-			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
+			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + // classpath*:
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath); // 通过扫描器获取指定包下面得文件
 			boolean traceEnabled = logger.isTraceEnabled();
@@ -427,11 +427,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					logger.trace("Scanning " + resource);
 				}
 				try {
-					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource); // 对resource进一步包装，其中这个类将resouce文件解析成类，存于类变量中
-					if (isCandidateComponent(metadataReader)) {
+					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource); // 对resource进一步包装，其中这个类将resource文件解析成类，存于类变量中
+					if (isCandidateComponent(metadataReader)) { // 如果是被@component修饰的要加入cadidate
 						ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 						sbd.setSource(resource);
-						if (isCandidateComponent(sbd)) { // 如果是被@component修饰的要加入cadidate
+						if (isCandidateComponent(sbd)) {
 							if (debugEnabled) {
 								logger.debug("Identified candidate component class: " + resource);
 							}
@@ -492,7 +492,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			}
 		}
 		for (TypeFilter tf : this.includeFilters) {
-			if (tf.match(metadataReader, getMetadataReaderFactory())) {
+			if (tf.match(metadataReader, getMetadataReaderFactory())) { // 判断component
 				return isConditionMatch(metadataReader);
 			}
 		}

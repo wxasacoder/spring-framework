@@ -57,12 +57,12 @@ public class XmlAC {
 //		randomService.doSomething();
 
 		// 事物测试
-		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-tx.xml");
+//		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-tx.xml");
 //		JdbcTemplate jdbcTemplate = (JdbcTemplate)applicationContext.getBean("jdbcTemplate");
 //		String sql = "INSERT INTO student(name,age,gender) values ('锤子',12,1)";
 //		jdbcTemplate.update(sql);
-		StudentService studentService = (StudentService) applicationContext.getBean("studentService");
-		studentService.insertStudentBatch();
+//		StudentService studentService = (StudentService) applicationContext.getBean("studentService");
+//		studentService.insertStudentBatch();
 	}
 
 

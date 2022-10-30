@@ -48,6 +48,11 @@ public class AnnoAC {
 //		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.populateBean");
 //		annotationConfigApplicationContext.getBean("autowriedAMap");
 
+		/**
+		 * configuration 被代理的测试 包括@Bean的原理
+		 */
+		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.configurationProxyed");
+
 
 	}
 }
