@@ -49,12 +49,12 @@ public class SpringTransactionAnnotationParser implements TransactionAnnotationP
 	}
 
 	@Override
-	@Nullable
+	@Nullable // 获取事物注解的相关属性
 	public TransactionAttribute parseTransactionAnnotation(AnnotatedElement element) {
 		AnnotationAttributes attributes = AnnotatedElementUtils.findMergedAnnotationAttributes(
 				element, Transactional.class, false, false);
 		if (attributes != null) {
-			return parseTransactionAnnotation(attributes);
+			return parseTransactionAnnotation(attributes); // 获取事物注解中的值
 		}
 		else {
 			return null;
@@ -68,7 +68,7 @@ public class SpringTransactionAnnotationParser implements TransactionAnnotationP
 	protected TransactionAttribute parseTransactionAnnotation(AnnotationAttributes attributes) {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 
-		Propagation propagation = attributes.getEnum("propagation");
+		Propagation propagation = attributes.getEnum("propagation"); // 获取隔离传播机制
 		rbta.setPropagationBehavior(propagation.value());
 		Isolation isolation = attributes.getEnum("isolation");
 		rbta.setIsolationLevel(isolation.value());

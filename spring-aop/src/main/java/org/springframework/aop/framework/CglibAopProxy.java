@@ -192,7 +192,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 			enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
 			enhancer.setStrategy(new ClassLoaderAwareGeneratorStrategy(classLoader));
 
-			Callback[] callbacks = getCallbacks(rootClass); // 构建连接器
+			Callback[] callbacks = getCallbacks(rootClass); // 构建连接器 将所有原始对象和advisor和interceptor均装成class 放入代理类中
 			Class<?>[] types = new Class<?>[callbacks.length];
 			for (int x = 0; x < types.length; x++) {
 				types[x] = callbacks[x].getClass();
@@ -288,7 +288,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 		boolean isStatic = this.advised.getTargetSource().isStatic();
 
 		// Choose an "aop" interceptor (used for AOP calls).
-		Callback aopInterceptor = new DynamicAdvisedInterceptor(this.advised);
+		Callback aopInterceptor = new DynamicAdvisedInterceptor(this.advised); // targetSource advice对象均被包转成DynamicAdvisedInterceptor对象
 
 		// Choose a "straight to target" interceptor. (used for calls that are
 		// unadvised but can return this). May be required to expose the proxy.

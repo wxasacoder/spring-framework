@@ -246,7 +246,7 @@ public abstract class AopUtils {
 
 		for (Class<?> clazz : classes) { // 判断当前的类是否需要被代理
 			Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);
-			for (Method method : methods) {
+			for (Method method : methods) { // 循环一个方法一个方法的处理
 				if (introductionAwareMethodMatcher != null ?
 						introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions) :
 						methodMatcher.matches(method, targetClass)) {
@@ -284,7 +284,7 @@ public abstract class AopUtils {
 		if (advisor instanceof IntroductionAdvisor) {
 			return ((IntroductionAdvisor) advisor).getClassFilter().matches(targetClass);
 		}
-		else if (advisor instanceof PointcutAdvisor pca) {
+		else if (advisor instanceof PointcutAdvisor pca) { // 判断当前的class 是否需要被代理
 			return canApply(pca.getPointcut(), targetClass, hasIntroductions);
 		}
 		else {
@@ -317,7 +317,7 @@ public abstract class AopUtils {
 				// already processed
 				continue;
 			}
-			if (canApply(candidate, clazz, hasIntroductions)) {
+			if (canApply(candidate, clazz, hasIntroductions)) { // pointcut类型的advisor   BeanFactoryTransactionAttributeSourceAdvisor事物增强器也是在这里处理的
 				eligibleAdvisors.add(candidate);
 			}
 		}

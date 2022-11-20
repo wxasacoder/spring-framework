@@ -1,6 +1,9 @@
 package org.springframework.wx;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.wx.beans4test.circularReference.A;
 import org.springframework.wx.beans4test.methodOveride.Student;
 import org.springframework.wx.beans4test.methodOveride.Teacher;
@@ -42,17 +45,42 @@ public class AnnoAC {
 //		annotationConfigApplicationContext.getBean("CCP");
 //		annotationConfigApplicationContext.close();
 
-		/**
-		 * 注入一个系统环境变量 Autowird 注入的探究
-		 */
+//		/**
+//		 * 注入一个系统环境变量 Autowird 注入的探究
+//		 */
 //		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.populateBean");
 //		annotationConfigApplicationContext.getBean("autowriedAMap");
 
-		/**
-		 * configuration 被代理的测试 包括@Bean的原理
-		 */
-		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.configurationProxyed");
+//		/**
+//		 * configuration 被代理的测试 包括@Bean的原理
+//		 */
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.configurationProxyed");
+
+		// 测试springEL(spring 提供的工具类)
+//		StandardEvaluationContext ctx = new StandardEvaluationContext();
+//		User user = new User();
+//		user.setName("jsjjs");
+//		ctx.setVariable("userDTO",user);
+//		SpelExpressionParser parser = new SpelExpressionParser();
+//		Expression expression = parser.parseExpression("#userDTO.name");
+//		String value = expression.getValue(ctx,String.class);
+//		System.out.println(value);
 
 
 	}
+
+//	public static class User{
+//
+//		private String name;
+//
+//		public void setName(String name){
+//			this.name = name;
+//		}
+//
+//		public String getName(){
+//			return this.name;
+//		}
+//
+//	}
+
 }

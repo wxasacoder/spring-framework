@@ -464,7 +464,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
 		proxyFactory.addAdvisors(advisors);
-		proxyFactory.setTargetSource(targetSource);
+		proxyFactory.setTargetSource(targetSource); // 将advisor 包装成ProxyFactory对象
 		customizeProxyFactory(proxyFactory);
 
 		proxyFactory.setFrozen(this.freezeProxy);

@@ -159,7 +159,7 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 		return determineTransactionAttribute(method);
 	}
 
-	/**
+	/** // 解析@transcation的注解信息
 	 * Determine the transaction attribute for the given method or class.
 	 * <p>This implementation delegates to configured
 	 * {@link TransactionAnnotationParser TransactionAnnotationParsers}
@@ -172,7 +172,7 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 	@Nullable
 	protected TransactionAttribute determineTransactionAttribute(AnnotatedElement element) {
 		for (TransactionAnnotationParser parser : this.annotationParsers) {
-			TransactionAttribute attr = parser.parseTransactionAnnotation(element);
+			TransactionAttribute attr = parser.parseTransactionAnnotation(element); // 开始处理@transaction的注解信息
 			if (attr != null) {
 				return attr;
 			}

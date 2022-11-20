@@ -120,7 +120,7 @@ public abstract class AbstractFallbackTransactionAttributeSource
 			}
 		}
 		else {
-			// We need to work it out.
+			// We need to work it out. // 解析方法上的@transaction注解 并将其属性返回为TransactionAttribute对象
 			TransactionAttribute txAttr = computeTransactionAttribute(method, targetClass);
 			// Put it in the cache.
 			if (txAttr == null) {
@@ -171,13 +171,13 @@ public abstract class AbstractFallbackTransactionAttributeSource
 		// If the target class is null, the method will be unchanged.
 		Method specificMethod = AopUtils.getMostSpecificMethod(method, targetClass);
 
-		// First try is the method in the target class.
+		// First try is the method in the target class. // 首先在类上进行获取
 		TransactionAttribute txAttr = findTransactionAttribute(specificMethod);
 		if (txAttr != null) {
 			return txAttr;
 		}
 
-		// Second try is the transaction attribute on the target class.
+		// Second try is the transaction attribute on the target class. // 如果类上没得那么则在interface上进行获取
 		txAttr = findTransactionAttribute(specificMethod.getDeclaringClass());
 		if (txAttr != null && ClassUtils.isUserLevelMethod(method)) {
 			return txAttr;
