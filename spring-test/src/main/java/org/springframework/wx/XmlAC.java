@@ -3,9 +3,12 @@ package org.springframework.wx;
 import org.springframework.cglib.core.DebuggingClassWriter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.wx.aop.RandomService;
 import org.springframework.wx.beans4test.circularReference.A;
 import org.springframework.wx.beans4test.circularReference.B;
+import org.springframework.wx.tx.AfterTransactionSynchronizer;
 import org.springframework.wx.tx.StudentService;
 
 /**
@@ -58,9 +61,9 @@ public class XmlAC {
 
 		// 事物测试
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-tx.xml");
-		JdbcTemplate jdbcTemplate = (JdbcTemplate)applicationContext.getBean("jdbcTemplate");
-		String sql = "INSERT INTO student(name,age,gender) values ('锤子',12,1)";
-		jdbcTemplate.update(sql);
+//		JdbcTemplate jdbcTemplate = (JdbcTemplate)applicationContext.getBean("jdbcTemplate");
+//		String sql = "INSERT INTO student(name,age,gender) values ('锤子',12,1)";
+//		jdbcTemplate.update(sql);
 		StudentService studentService = (StudentService) applicationContext.getBean("studentService");
 		studentService.insertStudentBatch();
 	}
