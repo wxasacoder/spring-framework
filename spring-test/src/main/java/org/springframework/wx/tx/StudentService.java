@@ -19,22 +19,27 @@ public class StudentService {
 	@Transactional(rollbackFor = Exception.class)
 	public void insertStudentBatch(){
 		StudentService studentService = (StudentService) AopContext.currentProxy();
+		String sql = "INSERT INTO student(name,age,gender) values ('1同学',12,1)";
+		jdbcTemplate.update(sql);
+
 		studentService.insertStudentOne();
-		studentService.insertStudentTWO();
+//		studentService.insertStudentTWO();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void insertStudentOne(){
 		String sql = "INSERT INTO student(name,age,gender) values ('1同学',12,1)";
 		jdbcTemplate.update(sql);
-	}
-
-	@Transactional(rollbackFor = Exception.class)
-	public void insertStudentTWO(){
-		String sql = "INSERT INTO student(name,age,gender) values ('2同学',12,1)";
-		jdbcTemplate.update(sql);
 		throw new RuntimeException("");
+
 	}
+//
+//	@Transactional(rollbackFor = Exception.class)
+//	public void insertStudentTWO(){
+//		String sql = "INSERT INTO student(name,age,gender) values ('2同学',12,1)";
+//		jdbcTemplate.update(sql);
+//		throw new RuntimeException("");
+//	}
 
 
 }

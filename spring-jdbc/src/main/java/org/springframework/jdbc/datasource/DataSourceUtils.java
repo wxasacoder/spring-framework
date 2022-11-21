@@ -212,7 +212,7 @@ public abstract class DataSourceUtils {
 			int currentIsolation = con.getTransactionIsolation();
 			if (currentIsolation != definition.getIsolationLevel()) {
 				previousIsolationLevel = currentIsolation;
-				con.setTransactionIsolation(definition.getIsolationLevel());
+				con.setTransactionIsolation(definition.getIsolationLevel()); // 设置的指定的隔离级别到当前的connection上去
 			}
 		}
 

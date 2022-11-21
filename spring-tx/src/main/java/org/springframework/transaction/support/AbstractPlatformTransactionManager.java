@@ -344,10 +344,10 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		// Use defaults if no transaction definition given.
 		TransactionDefinition def = (definition != null ? definition : TransactionDefinition.withDefaults());
 
-		Object transaction = doGetTransaction();
+		Object transaction = doGetTransaction(); // 创建事物
 		boolean debugEnabled = logger.isDebugEnabled();
-
-		if (isExistingTransaction(transaction)) {
+// 检查当前事物是否存在，如果村则则根据隔离级别去判断
+		if (isExistingTransaction(transaction)) { // 判断的方法是直接取Transaction中的对象，因为Transcation对象被创建出来之后，会将当前的connection包装成connection
 			// Existing transaction found -> check propagation behavior to find out how to behave.
 			return handleExistingTransaction(def, transaction, debugEnabled);
 		}
@@ -370,7 +370,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				logger.debug("Creating new transaction with name [" + def.getName() + "]: " + def);
 			}
 			try {
-				return startTransaction(def, transaction, debugEnabled, suspendedResources);
+				return startTransaction(def, transaction, debugEnabled, suspendedResources); // 开始事物
 			}
 			catch (RuntimeException | Error ex) {
 				resume(null, suspendedResources);
@@ -397,7 +397,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		boolean newSynchronization = (getTransactionSynchronization() != SYNCHRONIZATION_NEVER);
 		DefaultTransactionStatus status = newTransactionStatus(
 				definition, transaction, true, newSynchronization, debugEnabled, suspendedResources);
-		doBegin(transaction, definition);
+		doBegin(transaction, definition); // 开始
 		prepareSynchronization(status, definition);
 		return status;
 	}
@@ -806,7 +806,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		}
 
 		DefaultTransactionStatus defStatus = (DefaultTransactionStatus) status;
-		processRollback(defStatus, false);
+		processRollback(defStatus, false); // 处理回滚
 	}
 
 	/**
@@ -828,7 +828,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 					}
 					status.rollbackToHeldSavepoint();
 				}
-				else if (status.isNewTransaction()) {
+				else if (status.isNewTransaction()) { // 如果是一个新的事物直接回滚
 					if (status.isDebug()) {
 						logger.debug("Initiating transaction rollback");
 					}

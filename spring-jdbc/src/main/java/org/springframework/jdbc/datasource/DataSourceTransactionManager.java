@@ -243,7 +243,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		DataSourceTransactionObject txObject = new DataSourceTransactionObject();
 		txObject.setSavepointAllowed(isNestedTransactionAllowed());
 		ConnectionHolder conHolder =
-				(ConnectionHolder) TransactionSynchronizationManager.getResource(obtainDataSource());
+				(ConnectionHolder) TransactionSynchronizationManager.getResource(obtainDataSource()); // 从TransactionSynchronizationManager线程 变量中拿
 		txObject.setConnectionHolder(conHolder, false);
 		return txObject;
 	}
@@ -262,7 +262,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		try {
 			if (!txObject.hasConnectionHolder() ||
 					txObject.getConnectionHolder().isSynchronizedWithTransaction()) {
-				Connection newCon = obtainDataSource().getConnection();
+				Connection newCon = obtainDataSource().getConnection(); // 创建连接
 				if (logger.isDebugEnabled()) {
 					logger.debug("Acquired Connection [" + newCon + "] for JDBC transaction");
 				}
@@ -270,8 +270,8 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			}
 
 			txObject.getConnectionHolder().setSynchronizedWithTransaction(true);
-			con = txObject.getConnectionHolder().getConnection();
-
+			con = txObject.getConnectionHolder().getConnection();// 获取连接
+			// 为当前 connection 设置隔离级别设置
 			Integer previousIsolationLevel = DataSourceUtils.prepareConnectionForTransaction(con, definition);
 			txObject.setPreviousIsolationLevel(previousIsolationLevel);
 			txObject.setReadOnly(definition.isReadOnly());
@@ -279,20 +279,20 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			// Switch to manual commit if necessary. This is very expensive in some JDBC drivers,
 			// so we don't want to do it unnecessarily (for example if we've explicitly
 			// configured the connection pool to set it already).
-			if (con.getAutoCommit()) {
+			if (con.getAutoCommit()) { // 如果是自动提交则关闭自动提交
 				txObject.setMustRestoreAutoCommit(true);
 				if (logger.isDebugEnabled()) {
 					logger.debug("Switching JDBC Connection [" + con + "] to manual commit");
 				}
 				con.setAutoCommit(false);
 			}
-
+			// 设置事物只读
 			prepareTransactionalConnection(con, definition);
 			txObject.getConnectionHolder().setTransactionActive(true);
 
 			int timeout = determineTimeout(definition);
 			if (timeout != TransactionDefinition.TIMEOUT_DEFAULT) {
-				txObject.getConnectionHolder().setTimeoutInSeconds(timeout);
+				txObject.getConnectionHolder().setTimeoutInSeconds(timeout); // 设置超时时间
 			}
 
 			// Bind the connection holder to the thread.
@@ -345,7 +345,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			logger.debug("Rolling back JDBC transaction on Connection [" + con + "]");
 		}
 		try {
-			con.rollback();
+			con.rollback(); // 回滚
 		}
 		catch (SQLException ex) {
 			throw translateException("JDBC rollback", ex);
@@ -414,7 +414,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 
 		if (isEnforceReadOnly() && definition.isReadOnly()) {
 			try (Statement stmt = con.createStatement()) {
-				stmt.executeUpdate("SET TRANSACTION READ ONLY");
+				stmt.executeUpdate("SET TRANSACTION READ ONLY"); // 将当前的事物设置为只读，这样后续的事物只能看到事物提交之前的数据了
 			}
 		}
 	}

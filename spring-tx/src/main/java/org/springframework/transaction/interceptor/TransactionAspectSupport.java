@@ -339,7 +339,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		// If the transaction attribute is null, the method is non-transactional.
 		TransactionAttributeSource tas = getTransactionAttributeSource();
 		final TransactionAttribute txAttr = (tas != null ? tas.getTransactionAttribute(method, targetClass) : null);
-		final TransactionManager tm = determineTransactionManager(txAttr);
+		final TransactionManager tm = determineTransactionManager(txAttr); // 拿到事物管理器（从cache里面，如果cache中没得则直接获取这个bean）（DataSourceTransactionManager）
 
 		if (this.reactiveAdapterRegistry != null && tm instanceof ReactiveTransactionManager) {
 			boolean isSuspendingFunction = KotlinDetector.isSuspendingFunction(method);
@@ -375,10 +375,10 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		}
 
 		PlatformTransactionManager ptm = asPlatformTransactionManager(tm);
-		final String joinpointIdentification = methodIdentification(method, targetClass, txAttr);
+		final String joinpointIdentification = methodIdentification(method, targetClass, txAttr); // 取到方法名
 
 		if (txAttr == null || !(ptm instanceof CallbackPreferringPlatformTransactionManager)) {
-			// Standard transaction demarcation with getTransaction and commit/rollback calls.
+			// Standard transaction demarcation with getTransaction and commit/rollback calls. // 开启事物
 			TransactionInfo txInfo = createTransactionIfNecessary(ptm, txAttr, joinpointIdentification);
 
 			Object retVal;
@@ -578,7 +578,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	@SuppressWarnings("serial")
 	protected TransactionInfo createTransactionIfNecessary(@Nullable PlatformTransactionManager tm,
 			@Nullable TransactionAttribute txAttr, final String joinpointIdentification) {
-
+		// 如果没有为事物指定名字则直接使用方法的全限定名作为事物的名字
 		// If no name specified, apply method identification as transaction name.
 		if (txAttr != null && txAttr.getName() == null) {
 			txAttr = new DelegatingTransactionAttribute(txAttr) {
@@ -592,7 +592,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		TransactionStatus status = null;
 		if (txAttr != null) {
 			if (tm != null) {
-				status = tm.getTransaction(txAttr);
+				status = tm.getTransaction(txAttr); // 开启事物（包含 判断是否要开启新的等）
 			}
 			else {
 				if (logger.isDebugEnabled()) {
