@@ -359,7 +359,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			logger.debug("Setting JDBC transaction [" + txObject.getConnectionHolder().getConnection() +
 					"] rollback-only");
 		}
-		txObject.setRollbackOnly();
+		txObject.setRollbackOnly(); // 将trxInfo中的status中的tansacation中的connectionholder中的rollback only设为true
 	}
 
 	@Override

@@ -28,16 +28,15 @@ public class StudentService {
 
 //		new Thread(()->{
 //			System.out.println(Thread.currentThread().getName());
-//			try {
+		try {
 			studentService.insertStudentOne();
-//			} catch (Exception e){
-//
-//			}
+		} catch (Exception e){
+		}
 //		},"i am a new thread ").run();
 //		studentService.insertStudentTWO();
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED )
+	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 	public void insertStudentOne(){
 		System.err.println("-----------------------------------" + Thread.currentThread().getName());
 		String sql = "INSERT INTO student(name,age,gender) values ('1同学',112,1)";

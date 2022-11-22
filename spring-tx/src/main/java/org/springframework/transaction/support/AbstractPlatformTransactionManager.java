@@ -699,7 +699,8 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			processRollback(defStatus, false);
 			return;
 		}
-
+		// 后者此处回去检测 txInfo中的status中的connectionHolder中的connection中的rollBackOnly标志
+		// 如果为true则直接回滚
 		if (!shouldCommitOnGlobalRollbackOnly() && defStatus.isGlobalRollbackOnly()) {
 			if (defStatus.isDebug()) {
 				logger.debug("Global transaction is marked as rollback-only but transactional code requested commit");
@@ -707,7 +708,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			processRollback(defStatus, true);
 			return;
 		}
-
+		// 直接提交
 		processCommit(defStatus);
 	}
 
@@ -727,7 +728,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				triggerBeforeCommit(status);
 				triggerBeforeCompletion(status);
 				beforeCompletionInvoked = true;
-
+				// 是否有回滚点，有回滚点其实意味着是子事物则需要延迟提交待到父亲事物一起提交
 				if (status.hasSavepoint()) {
 					if (status.isDebug()) {
 						logger.debug("Releasing transaction savepoint");
@@ -735,13 +736,13 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 					unexpectedRollback = status.isGlobalRollbackOnly();
 					status.releaseHeldSavepoint();
 				}
-				else if (status.isNewTransaction()) {
+				else if (status.isNewTransaction()) { // 如果是第一个connection则直接提交，第一个connection意味着是事物方法调用的根
 					if (status.isDebug()) {
 						logger.debug("Initiating transaction commit");
 					}
 					unexpectedRollback = status.isGlobalRollbackOnly();
 					doCommit(status);
-				}
+				} // 对于使用的一个事物会到，此处，也就是说ab都是require，a调用b，b在提交的时候会走到这里
 				else if (isFailEarlyOnGlobalRollbackOnly()) {
 					unexpectedRollback = status.isGlobalRollbackOnly();
 				}
@@ -754,7 +755,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				}
 			}
 			catch (UnexpectedRollbackException ex) {
-				// can only be caused by doCommit
+				// can only be caused by doCommit //// 执行向TrxManger中注册同步器（afterRollback的逻辑）
 				triggerAfterCompletion(status, TransactionSynchronization.STATUS_ROLLED_BACK);
 				throw ex;
 			}
@@ -763,7 +764,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				if (isRollbackOnCommitFailure()) {
 					doRollbackOnCommitException(status, ex);
 				}
-				else {
+				else { // 执行向TrxManger中注册同步器，该同步器可以实现afterCommit和AfterRollback的执行逻辑
 					triggerAfterCompletion(status, TransactionSynchronization.STATUS_UNKNOWN);
 				}
 				throw ex;
