@@ -24,26 +24,32 @@ public class StudentService {
 		StudentService studentService = (StudentService) AopContext.currentProxy();
 		String sql = "INSERT INTO student(name,age,gender) values ('1同学',12,1)";
 		jdbcTemplate.update(sql);
-		TransactionSynchronizationManager.registerSynchronization(AfterTransactionSynchronizer.getInstance());
+//		TransactionSynchronizationManager.registerSynchronization(AfterTransactionSynchronizer.getInstance());
 
-//		studentService.insertStudentOne();
+//		new Thread(()->{
+//			System.out.println(Thread.currentThread().getName());
+//			try {
+			studentService.insertStudentOne();
+//			} catch (Exception e){
+//
+//			}
+//		},"i am a new thread ").run();
 //		studentService.insertStudentTWO();
 	}
 
-	@Transactional(rollbackFor = Exception.class,propagation = Propagation.NESTED )
+	@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED )
 	public void insertStudentOne(){
-		String sql = "INSERT INTO student(name,age,gender) values ('1同学',12,1)";
+		System.err.println("-----------------------------------" + Thread.currentThread().getName());
+		String sql = "INSERT INTO student(name,age,gender) values ('1同学',112,1)";
 		jdbcTemplate.update(sql);
 		throw new RuntimeException("");
-
 	}
 //
 //	@Transactional(rollbackFor = Exception.class)
-//	public void insertStudentTWO(){
-//		String sql = "INSERT INTO student(name,age,gender) values ('2同学',12,1)";
-//		jdbcTemplate.update(sql);
-//		throw new RuntimeException("");
-//	}
+	public void insertStudentTWO(){
+		String sql = "INSERT INTO student(name,age,gender) values ('2同学',12,1)";
+		jdbcTemplate.update(sql);
+	}
 
 
 }

@@ -66,6 +66,7 @@ public class XmlAC {
 //		jdbcTemplate.update(sql);
 		StudentService studentService = (StudentService) applicationContext.getBean("studentService");
 		studentService.insertStudentBatch();
+//		studentService.insertStudentTWO();
 	}
 
 
