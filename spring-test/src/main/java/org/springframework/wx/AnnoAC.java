@@ -66,6 +66,10 @@ public class AnnoAC {
 //		String value = expression.getValue(ctx,String.class);
 //		System.out.println(value);
 
+		// 测试importSelector
+		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.importSelector");
+		annotationConfigApplicationContext.getBean("personL");
+
 
 	}
 
