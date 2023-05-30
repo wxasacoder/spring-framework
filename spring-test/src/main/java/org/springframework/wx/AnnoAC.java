@@ -5,6 +5,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.wx.beans4test.circularReference.A;
+import org.springframework.wx.beans4test.lazy.NotALazyBean;
 import org.springframework.wx.beans4test.methodOveride.Student;
 import org.springframework.wx.beans4test.methodOveride.Teacher;
 
@@ -67,8 +68,11 @@ public class AnnoAC {
 //		System.out.println(value);
 
 		// 测试importSelector
-		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.importSelector");
-		annotationConfigApplicationContext.getBean("personL");
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.importSelector");
+//		annotationConfigApplicationContext.getBean("personL");
+		// 实现懒加载bean
+		AnnotationConfigApplicationContext context4LazyTest = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.lazy");
+		((NotALazyBean)context4LazyTest.getBean("notALazyBean")).getIamALazyBean().getaBeanNeedAName();
 
 
 	}
