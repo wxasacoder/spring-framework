@@ -1,9 +1,11 @@
 package org.springframework.wx;
 
+import org.springframework.cglib.core.DebuggingClassWriter;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.wx.aop.RandomService;
 import org.springframework.wx.beans4test.circularReference.A;
 import org.springframework.wx.beans4test.lazy.NotALazyBean;
 import org.springframework.wx.beans4test.methodOveride.Student;
@@ -71,9 +73,14 @@ public class AnnoAC {
 //		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext("org.springframework.wx.importSelector");
 //		annotationConfigApplicationContext.getBean("personL");
 		// 实现懒加载bean
-		AnnotationConfigApplicationContext context4LazyTest = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.lazy");
-		((NotALazyBean)context4LazyTest.getBean("notALazyBean")).getIamALazyBean().getaBeanNeedAName();
+//		AnnotationConfigApplicationContext context4LazyTest = new AnnotationConfigApplicationContext("org.springframework.wx.beans4test.lazy");
+//		((NotALazyBean)context4LazyTest.getBean("notALazyBean")).getIamALazyBean().getaBeanNeedAName();
 
+		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY,"/home/wx/Documents/personal_java/spring-framework/spring-test/src/main/java/org/springframework/wx/aop");
+		AnnotationConfigApplicationContext applicationContext =
+		new AnnotationConfigApplicationContext("org.springframework.wx.aop");
+		RandomService bean = applicationContext.getBean(RandomService.class);
+		bean.doSomething();
 
 	}
 
