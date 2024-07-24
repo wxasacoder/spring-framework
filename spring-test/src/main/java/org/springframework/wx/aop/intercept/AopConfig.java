@@ -2,8 +2,6 @@ package org.springframework.wx.aop.intercept;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -44,9 +42,8 @@ public class AopConfig {
 
 	public static class TracingInterceptor implements MethodInterceptor {
 
-		@Nullable
 		@Override
-		public Object invoke(@NotNull MethodInvocation invocation) throws Throwable {
+		public Object invoke(MethodInvocation invocation) throws Throwable {
 			Method method = invocation.getMethod();
 			String name = method.getName();
 			System.out.println(name + "方法开始执行！");
